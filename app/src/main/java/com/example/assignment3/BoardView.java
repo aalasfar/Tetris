@@ -1,5 +1,3 @@
-package com.example.assignment3;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,7 +13,7 @@ import android.view.SurfaceHolder;
 import com.example.assignment3.R;
 
 public class BoardView extends SurfaceView implements SurfaceHolder.Callback {
-    Bitmap mybitmap= BitmapFactory.decodeResource (getResources ( ) , R.drawable . image) ;
+    Bitmap mybitmap= BitmapFactory.decodeResource (getResources ( ) , R.drawable . green_block) ;
     float x;
     float y;
 
