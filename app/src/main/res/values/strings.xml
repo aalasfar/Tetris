@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Assignment3</string>
+    <string name="rotate">Rotate</string>
+    <string name="left">Left</string>
+    <string name="right">Right</string>
+    <string name="down">Down</string>
 </resources>

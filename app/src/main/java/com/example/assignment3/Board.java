@@ -1,13 +1,13 @@
-package com.example.assignment3;
+//package com.example.assignment3;
 
-import java.awt.Color;
-import java.awt.Dimensions;
-import java.awt.Graphics;
-import java.util.Timer;
+//import java.awt.Color;
+//import java.awt.Dimensions;
+//import java.awt.Graphics;
+//import java.util.Timer;
 
-public class Board extends JPanel implements ActionListener {
+//public class Board extends JPanel implements ActionListener {
 
-    private static final int BOARD_WIDTH = 10;
+    /*private static final int BOARD_WIDTH = 10;
     private static final int BOARD_HEIGHT = 16;
     private Timer timer;
     private boolean isFallingDone = false;
@@ -17,5 +17,5 @@ public class Board extends JPanel implements ActionListener {
     private int currentX = 0;
     private int currentY = 0;
     private JLabel statusBar;
-
-}
+*/
+//}
