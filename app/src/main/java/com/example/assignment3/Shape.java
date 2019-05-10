@@ -16,8 +16,8 @@ import android.view.View;
 import java.util.Random;
 
 public class Shape extends View {
-    int swidth = 102;
-    int sheight= 97;
+    int swidth = 100;
+    int sheight= 100;
     public Shape(Context context) {
         super(context);
         init(null);
@@ -49,8 +49,8 @@ public class Shape extends View {
         Rect rect = new Rect();
         rect.left =0;
         rect.top=0;
-        rect.right=rect.left +swidth;
-        rect.bottom=rect.top+sheight;
+        rect.right=rect.left + swidth;
+        rect.bottom=rect.top+ sheight;
 
         Paint paint = new Paint();
         paint.setColor(Color.BLUE);
@@ -58,8 +58,8 @@ public class Shape extends View {
 
     }
 
-    public class Sqaure(){
+  //  public class Sqaure(){
 
-    }
+    //}
 
 }
