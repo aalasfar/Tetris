@@ -10,5 +10,7 @@ public class Tetris extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tetris);
         Shape shape = new Shape(this);
+
+
     }
 }
