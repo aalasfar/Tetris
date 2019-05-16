@@ -8,8 +8,8 @@ public class Shapes extends Tetris{
     //float v;
 
     public void OShape( ){
-        x = gameboardx[0];
-        y = gameboardy[0];
+        x = gameboard[0][0];
+        y = gameboard[1][0];
 
     }
     public void IShape(){
