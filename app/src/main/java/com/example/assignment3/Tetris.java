@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -16,10 +17,13 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
     Bitmap square;
     float x = 0;
     float y = 0;
+    final float gridW = 108;
+    final float gridH = 99;
     @Override
     protected void onCreate(Bundle savedInstanceState){
-
         super.onCreate(savedInstanceState);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
         view = new TetrisView(this);
         view.setOnTouchListener(this);
         square = BitmapFactory.decodeResource(getResources(),R.drawable.yellowblock);
@@ -64,8 +68,18 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
                 Canvas grid = holder.lockCanvas();
                 System.out.println(grid.getHeight());
                 System.out.println(grid.getWidth());
-                grid.drawARGB(255,150,150,10);
-                grid.drawBitmap(square,x,y,null);
+                grid.drawARGB(255,150,150,150);
+                for (int i = 0; i < 2; i++) {
+                    for (int j = 0; j < 2; j++) {
+                        grid.drawBitmap(square, x + i * square.getWidth(), y + j * square.getHeight(), null);
+                    }
+                }
+                y++;
+                if(y >= grid.getHeight() - square.getHeight()){
+                    //grid.drawBitmap(square, );
+
+                }
+                //grid.drawBitmap(square,x,y,null);
                 holder.unlockCanvasAndPost(grid);
             }
         }
@@ -114,4 +128,7 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
 
         return true;
     }
+
+
+
 }
