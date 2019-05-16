@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    BoardView b;
     FrameLayout frm;    ///
     ImageView tetrisBackground;
 
@@ -18,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        b = new BoardView(this);
+
 
         setContentView(R.layout.activity_main);
         //frm = (FrameLayout) findViewById(R.id.frameLayout);///
