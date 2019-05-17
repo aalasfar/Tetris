@@ -20,12 +20,12 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
     Bitmap yellow, blue, red, green, lblue, purple, orange;
     float gameboard[][] = new float[2][];
     int gamevalue[][] = new int[10][16];
-    float x = 0;
-    float y = 0;
+    int x = 5;
+    int y = 0;
     final int gridW = 108;
     final int gridH = 99;
-    public static final int SWIPE = 100;
-    public static final int SWIPE_VELOCITY = 100;
+    public static final int SWIPE = 200;
+    public static final int SWIPE_VELOCITY = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +71,8 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
         SurfaceHolder holder;
         boolean running = false;
         boolean moving = false;
+        boolean moveRight = false;
+        boolean moveLeft = false;
 
         public TetrisView(Context context) {
             super(context);
@@ -91,7 +93,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                //draw();
+                draw();
             }
             //game.start();
         }
@@ -138,25 +140,35 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
         }
 
         public void move() {
-
-            if (m == 0){
-             //gamevalue[0][0]=6;
-             Tetrominos(1,0,0);
-             m++;
-            }
-            else if(m == 1){
                 //gamevalue[0][0]=6;
-                Tetrominos(1,0,0);
+               Tetrominos(1,x,y);
+                /**deleting previous block**/
+
                 for (int i = 0; i <16 ; i++) {
                     if (i == 0){
                         //gamevalue[0][i]= 6;
-                        Tetrominos(1,0,i);
+                        Tetrominos(1,x,i);
                     }
                     else {
                         //gamevalue[0][i - 1] = 0;
-                        deleteblock(1,0,i-1);
+                        deleteblock(1,x,i-1);
                         //gamevalue[0][i] = 6;
-                        Tetrominos(1,0,i);
+                        Tetrominos(1,x,i);
+                    }
+                    if (moveRight){
+                        deleteblock(1,x,y+i);
+                        x++;
+                        if(x > 9){
+                        x=8;}
+                        Tetrominos(1,x,y+i );
+                        moveRight = false;
+                    }
+                    if (moveLeft){
+                        deleteblock(1,x,y+i);
+                        if (x > 0){
+                        x--;}
+                        Tetrominos(1,x,y+i);
+                        moveLeft = false;
                     }
                     try {
                         Thread.sleep(500);
@@ -166,16 +178,11 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                     draw();
                     if (i == 14){
                         break;
-                    }/*
-                    if (gamevalue[0][i+1] > 0){
-                        break;
-                    }*/
-                    int check = CheckY(1, 0, i);
-                    if(check == 0){
-                        break;
                     }
+                    int check = CheckY(1, x, y+i);
+                    if(check == 0){ break; }
                 }
-            }                    CheckRow();
+            CheckRow();
 
         }
 
@@ -263,6 +270,15 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
             }
             CheckRow();
         }
+
+        public void MoveRight(){
+            moveRight = true;
+
+        }
+        public void MoveLeft(){
+            moveLeft = true;
+
+        }
 }
     @Override
     public boolean onDown(MotionEvent e) {
@@ -320,9 +336,11 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
 
     private void onSwipeRight() {
         Toast.makeText(this, "Swipe Right", Toast.LENGTH_LONG).show();
+        view.MoveRight();
     }
     private void onSwipeLeft() {
         Toast.makeText(this, "Swipe Left", Toast.LENGTH_LONG).show();
+        view.MoveLeft();
     }
     private void onSwipeBottom() {
         Toast.makeText(this, "Swipe Bottom", Toast.LENGTH_LONG).show();
