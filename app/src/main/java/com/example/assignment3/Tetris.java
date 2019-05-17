@@ -132,22 +132,22 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
 
         public void move() {
             if (m == 0){
-             //gamevalue[0][0]=2;
-                Tetrominos(1,0,0);
+             //gamevalue[0][0]=6;
+             Tetrominos(1,0,0);
              m++;
             }
             else if(m == 1){
-                //gamevalue[0][0]=2;
+                //gamevalue[0][0]=6;
                 Tetrominos(1,0,0);
                 for (int i = 0; i <16 ; i++) {
                     if (i == 0){
-                        //gamevalue[0][i]= 2;
+                        //gamevalue[0][i]= 6;
                         Tetrominos(1,0,i);
                     }
                     else {
                         //gamevalue[0][i - 1] = 0;
                         deleteblock(1,0,i-1);
-                        //gamevalue[0][i] = 7;
+                        gamevalue[0][i] = 6;
                         Tetrominos(1,0,i);
                     }
                     try {
@@ -157,11 +157,14 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
                     }
 
                     draw();
-                    if (i == 15){
+                    if (i == 14){
                         break;
-                    }
-                    int check = Check(1, 1, i);
-                    if(check ==  0){
+                    }/*
+                    if (gamevalue[0][i+1] > 0){
+                        break;
+                    }*/
+                    int check = CheckY(1, 0, i);
+                    if(check == 0){
                         break;
                     }
                 }
@@ -192,13 +195,9 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
                 //O block
                 case 1:
                     for(int i=0; i < 2; i++){
-                        if (coorY >= 15){
-                            break;
-                        }
+                        //if (coorY >= 15){break;}
                         for(int j=0; j < 2; j++){
-                            if (coorX >= 9){
-                                break;
-                            }
+                            //if (coorX >= 9){ break; }
                             gamevalue[i+coorX][j+coorY] = t;
                         }
                     }
@@ -220,16 +219,14 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
                     break;
             }
         }
-        public int Check(int t, int i, int j){
+        public int CheckY(int t, int i, int j){
             switch (t) {
                 case 1:
                     if(j+2 <= 14) {
-                        if (gamevalue[i + 2][j + 2] != 0){
+                        if (gamevalue[i][j+2] > 0){
                         return 0;
                         }
-                    else{
-                        return 1;
-                    }
+                    else{ return 1; }
             }
         }
         return 1;
