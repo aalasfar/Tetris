@@ -14,22 +14,21 @@ import android.view.View;
 
 public class Tetris extends AppCompatActivity implements View.OnTouchListener {
     TetrisView view;
-    Bitmap yellow,blue,red,green,lblue,purple,orange ;
-    int gameboard[][] = new int[2][];
+    Bitmap yellow, blue, red, green, lblue, purple, orange;
+    float gameboard[][] = new float[2][];
     int gamevalue[][] = new int[10][16];
     float x = 0;
     float y = 0;
     final int gridW = 108;
     final int gridH = 99;
-    //Shapes shape = new Shapes();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
-        gameboard[0] = new int[10];
-        gameboard[1] = new int[16];
+        gameboard[0] = new float[10];
+        gameboard[1] = new float[16];
         view = new TetrisView(this);
         view.setOnTouchListener(this);
         yellow = BitmapFactory.decodeResource(getResources(), R.drawable.yellowblock);
@@ -39,6 +38,14 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
         lblue = BitmapFactory.decodeResource(getResources(), R.drawable.lightblueblock);
         orange = BitmapFactory.decodeResource(getResources(), R.drawable.orangeblock);
         purple = BitmapFactory.decodeResource(getResources(), R.drawable.purpleblock);
+        for (int k = 0; k < 10; k++) {
+            gameboard[0][k] = gridW * k;
+
+        }
+        for (int k = 0; k < 16; k++) {
+            gameboard[1][k] = gridH * k;
+        }
+       // gamevalue[5][5] = 2;
         setContentView(view);
     }
 
@@ -57,6 +64,7 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
 
     public class TetrisView extends SurfaceView implements Runnable {
         Thread game = null;
+        int m = 0;
         SurfaceHolder holder;
         boolean running = false;
         boolean moving = false;
@@ -66,74 +74,83 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
             holder = getHolder();
         }
 
-
         @Override
         public void run() {
-            for (int k = 0; k < 10; k++) {
-                gameboard[0][k] = gridW * k;
-
-            }
-            for (int k = 0; k < 16; k++) {
-                gameboard[1][k] = gridH * k;
-            }
-
             while (running == true) {
                 //draw shapes
+                try {
+                    Thread.sleep(1000);
+                    move();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                draw();
+            }
+            //game.start();
+        }
+
+        public void draw() {
+            boolean n = true;
+            while (n) {
                 if (!holder.getSurface().isValid()) {
                     continue;
                 }
                 Canvas grid = holder.lockCanvas();
                 grid.drawARGB(255, 150, 150, 150);
-                /*for(int j = 0; j <10 ; j++) {
-                    for (int l = 0; l < 16; l++) {
-                        gamevalue[j][l] = 1;
-                    }
-                }*/
-                for(int i=0; i < 10; i++) {
+                for (int i = 0; i < 10; i++) {
                     for (int q = 0; q < 16; q++) {
                         switch (gamevalue[i][q]) {
                             case 1:
-                                grid.drawBitmap(yellow, gameboard[0][i],gameboard[1][q], null);
+                                grid.drawBitmap(yellow, gameboard[0][i], gameboard[1][q], null);
                                 break;
                             case 2:
-                                grid.drawBitmap(blue, gameboard[0][i], y + gameboard[1][q], null);
+                                grid.drawBitmap(blue, gameboard[0][i], y+ gameboard[1][q], null);
                                 break;
                             case 3:
-                                grid.drawBitmap(red, gameboard[0][i], y + gameboard[1][q], null);
+                                grid.drawBitmap(red, gameboard[0][i], gameboard[1][q], null);
                                 break;
                             case 4:
-                                grid.drawBitmap(lblue, gameboard[0][i], y + gameboard[1][q], null);
+                                grid.drawBitmap(lblue, gameboard[0][i], gameboard[1][q], null);
                                 break;
                             case 5:
-                                grid.drawBitmap(green, gameboard[0][i], y + gameboard[1][q], null);
+                                grid.drawBitmap(green, gameboard[0][i], gameboard[1][q], null);
                                 break;
                             case 6:
-                                grid.drawBitmap(purple, gameboard[0][i], y + gameboard[1][q], null);
+                                grid.drawBitmap(purple, gameboard[0][i], gameboard[1][q], null);
                                 break;
                             case 7:
-                                grid.drawBitmap(orange, gameboard[0][i], y + gameboard[1][q], null);
+                                grid.drawBitmap(orange, gameboard[0][i], gameboard[1][q], null);
                                 break;
 
                         }
                     }
                 }
-                /*grid.drawBitmap(yellow, gameboard[0][0], y+ gameboard[1][0], null);
-                grid.drawBitmap(yellow, gameboard[0][0],y + gameboard[1][1], null);
-                grid.drawBitmap(yellow, gameboard[0][1],y + gameboard[1][0], null);
-                grid.drawBitmap(yellow, gameboard[0][1],y + gameboard[1][1], null);*/
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-                /*if (gameboard[2][150] <= 0) {
-                    y = y + gridH;
-                }*/
-                /*if(y < 1485) {
-                  y = y + gridH;
-                }*/
                 holder.unlockCanvasAndPost(grid);
+                n = false;
+            }
+        }
+
+        public void move() {
+            if (m == 0){
+             gamevalue[5][5]=2;
+             m++;
+            }
+            else if(m == 1){
+                for (int i = 5; i <15 ; i++) {
+                    gamevalue[5][i - 1] = 0;
+                    gamevalue[5][i] = 2;
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    draw();
+                }
             }
         }
 
