@@ -144,7 +144,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 n = false;
             }
         }
-int t = 1;
+int t = 2;
         public void move() {
                 //gamevalue[0][0]=6;
             //start at center
@@ -188,9 +188,6 @@ int t = 1;
                         e.printStackTrace();
                     }
                     draw();
-                    if (i == 14){
-                        break;
-                    }
                     int check = CheckY(t, x, y+i);
                     if(check == 0){ break; }
                 }
@@ -253,8 +250,11 @@ int t = 1;
         public int CheckY(int t, int i, int j){
             switch (t) {
                 case 1:
+                    //if(j == 16 ){
+                      //  return 1;
+                    //}
                     if (moving){
-                        if(j+1<=15){
+                        if(j+1<=14){
                             if(gamevalue[i][j+2] > 1 || gamevalue[i+1][j+2] > 1){
                                 return 0;
                             }
@@ -269,15 +269,15 @@ int t = 1;
                             else {return 1;}
                         }
                     }
-                    if(j+2 <= 14) {
+                    if(j+2 <= 15) {
                         if (gamevalue[i][j+2] > 0 || gamevalue[i+1][j+2] > 0){
                         return 0;
                         }
                     else{ return 1; }
             }
                 case 2:
-                    if(j+2 <= 14){
-                        if(gamevalue[i][j+2]>0 || gamevalue[i+1][j+2]>0 || gamevalue[i+2][j+2]>0 || gamevalue[i+3][j+2]>0){
+                    if(j+1 <= 15){
+                        if(gamevalue[i][j+1]>0 || gamevalue[i+1][j+1]>0 || gamevalue[i+2][j+1]>0 || gamevalue[i+3][j+1]>0){
                             return 0; }
                         else{   return 1;   }
                     }
