@@ -7,12 +7,15 @@ import android.graphics.Canvas;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Toast;
 
-public class Tetris extends AppCompatActivity implements View.OnTouchListener {
+public class Tetris extends AppCompatActivity implements GestureDetector.OnGestureListener {
+    private final GestureDetector gestureDetector = new GestureDetector(this);
     TetrisView view;
     Bitmap yellow, blue, red, green, lblue, purple, orange;
     float gameboard[][] = new float[2][];
@@ -21,6 +24,8 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
     float y = 0;
     final int gridW = 108;
     final int gridH = 99;
+    public static final int SWIPE = 100;
+    public static final int SWIPE_VELOCITY = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +35,6 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
         gameboard[0] = new float[10];
         gameboard[1] = new float[16];
         view = new TetrisView(this);
-        view.setOnTouchListener(this);
         yellow = BitmapFactory.decodeResource(getResources(), R.drawable.yellowblock);
         blue = BitmapFactory.decodeResource(getResources(), R.drawable.blueblock);
         red = BitmapFactory.decodeResource(getResources(), R.drawable.redblock);
@@ -60,7 +64,6 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
         super.onResume();
         view.resume();
     }
-
 
     public class TetrisView extends SurfaceView implements Runnable {
         Thread game = null;
@@ -261,32 +264,76 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
             CheckRow();
         }
 }
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
 
     @Override
-    public boolean onTouch(View v, MotionEvent event) {
+    public void onShowPress(MotionEvent e) {
 
-        /*try{
-            Thread.sleep(1000);
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }*/
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                x = event.getX();
-                y = event.getY();
-                break;
-            case MotionEvent.ACTION_UP:
-                x = event.getX();
-                y = event.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                x = event.getX();
-                y = event.getY();
-                break;
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+    @Override
+    public boolean onFling(MotionEvent downEvent, MotionEvent moveEvent, float velocityX, float velocityY) {
+        boolean result = false;
+        float diffY = moveEvent.getY() - downEvent.getY();
+        float diffX = moveEvent.getX() - downEvent.getX();
+        // which is greater? X or Y
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            //right or left swipe
+            if (Math.abs(diffX) > SWIPE && Math.abs(velocityX) > SWIPE_VELOCITY) {
+                if (diffX > 0) {
+                    onSwipeRight();
+                } else {
+                    onSwipeLeft();
+                }
+                result = true;
+            }
+        } else {
+            if (Math.abs(diffY) > SWIPE && Math.abs(velocityY) > SWIPE_VELOCITY) {
+                if (diffY > 0) {
+                    onSwipeBottom();
+                } else {
+                    onSwipeTop();
+                }
+                result = true;
+            }
         }
 
+        return result;
+    }
 
-        return true;
+    private void onSwipeRight() {
+        Toast.makeText(this, "Swipe Right", Toast.LENGTH_LONG).show();
+    }
+    private void onSwipeLeft() {
+        Toast.makeText(this, "Swipe Left", Toast.LENGTH_LONG).show();
+    }
+    private void onSwipeBottom() {
+        Toast.makeText(this, "Swipe Bottom", Toast.LENGTH_LONG).show();
+    }
+    private void onSwipeTop() {
+        Toast.makeText(this, "Swipe Top", Toast.LENGTH_LONG).show();
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        gestureDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 
 
