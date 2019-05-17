@@ -158,15 +158,16 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                     if (moveRight){
                         deleteblock(1,x,y+i);
                         x++;
-                        if(x > 9){
+                        if(x >= 9){
                         x=8;}
                         Tetrominos(1,x,y+i );
                         moveRight = false;
                     }
                     if (moveLeft){
                         deleteblock(1,x,y+i);
-                        if (x > 0){
-                        x--;}
+                        x--;
+                        if (x <= 0){
+                        x=0;}
                         Tetrominos(1,x,y+i);
                         moveLeft = false;
                     }
