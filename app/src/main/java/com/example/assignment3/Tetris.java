@@ -17,10 +17,12 @@ import android.widget.Toast;
 public class Tetris extends AppCompatActivity implements GestureDetector.OnGestureListener {
     private final GestureDetector gestureDetector = new GestureDetector(this);
     TetrisView view;
+    static final int sizeX = 10;
+    static final int sizeY = 16;
     Bitmap yellow, blue, red, green, lblue, purple, orange;
     float gameboard[][] = new float[2][];
-    int gamevalue[][] = new int[10][16];
-    int x = 5;
+    int gamevalue[][] = new int[sizeX][sizeY];
+    int x = 0;
     int y = 0;
     final int gridW = 108;
     final int gridH = 99;
@@ -138,37 +140,42 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 n = false;
             }
         }
-
+int t = 1;
         public void move() {
                 //gamevalue[0][0]=6;
-               Tetrominos(1,x,y);
+            //start at center
+            x=4;
+               Tetrominos(t,x,y);
                 /**deleting previous block**/
 
-                for (int i = 0; i <16 ; i++) {
+                for (int i = 0; i <sizeY ; i++) {
                     if (i == 0){
                         //gamevalue[0][i]= 6;
-                        Tetrominos(1,x,i);
+                        Tetrominos(t,x,i+y);
                     }
                     else {
                         //gamevalue[0][i - 1] = 0;
-                        deleteblock(1,x,i-1);
+                        deleteblock(t,x,y+i-1);
                         //gamevalue[0][i] = 6;
                         Tetrominos(1,x,i);
                     }
                     if (moveRight){
-                        deleteblock(1,x,y+i);
+                        deleteblock(t,x,i+y);
                         x++;
-                        if(x >= 9){
-                        x=8;}
-                        Tetrominos(1,x,y+i );
+                        //if(x >= 9){
+                        //x=8;}
+                        x = CheckXRight(t, x, y+i);
+                        Tetrominos(t,x,y+i );
                         moveRight = false;
+
                     }
                     if (moveLeft){
-                        deleteblock(1,x,y+i);
+                        deleteblock(t,x,y+i);
                         x--;
-                        if (x <= 0){
-                        x=0;}
-                        Tetrominos(1,x,y+i);
+                        //if (x <= 0){
+                        //x=0;}
+                        x = CheckXLeft(t, x, y+i);
+                        Tetrominos(t,x,y+i);
                         moveLeft = false;
                     }
                     try {
@@ -180,7 +187,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                     if (i == 14){
                         break;
                     }
-                    int check = CheckY(1, x, y+i);
+                    int check = CheckY(t, x, y+i);
                     if(check == 0){ break; }
                 }
             CheckRow();
@@ -205,23 +212,26 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
             game = new Thread(this);
             game.start();
         }
+        /*********************************************/
         public void Tetrominos(int t, int coorX, int coorY){
-
             switch(t) {
                 //O block
                 case 1:
                     for(int i=0; i < 2; i++){
-                        //if (coorY >= 15){break;}
                         for(int j=0; j < 2; j++){
-                            //if (coorX >= 9){ break; }
                             gamevalue[i+coorX][j+coorY] = t;
                         }
-                    }
-                   // printboard();
-                    break;
+                    }break;
+                case 2: // I block
+                    for(int i=0; i<4; i++){
+                        gamevalue[i+coorX][i+coorY] = t;
+                    }break;
             }
         }
+        /****************************************/
         public void deleteblock(int t, int coorX, int coorY){
+           // Tetrominos(t, coorX, coorY);
+
             switch(t) {
                 //O block
                 case 1:
@@ -229,11 +239,14 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                         for(int j=0; j < 2; j++){
                             gamevalue[i+coorX][j+coorY] = 0;
                         }
+                    }break;
+                case 2:     //I block
+                    for(int i=0; i<4; i++){
+                        gamevalue[i+coorX][i+coorY]=0;
                     }
-                    // printboard();
-                    break;
             }
         }
+        /******************************************/
         public int CheckY(int t, int i, int j){
             switch (t) {
                 case 1:
@@ -243,9 +256,57 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                         }
                     else{ return 1; }
             }
+                case 2:
+                    if(j+2 <= 14){
+                        if(gamevalue[i][j+2]>0 || gamevalue[i+1][j+2]>0 || gamevalue[i+2][j+2]>0 || gamevalue[i+3][j+2]>0){
+                            return 0; }
+                        else{   return 1;   }
+                    }
         }
         return 1;
     }
+    /***************************************************/
+        public int CheckXRight(int t, int i, int j) {
+            switch (t) {
+                case 1:
+                    //check right is empty
+                    if (i + 2 <= sizeX - 2) {
+                        if (gamevalue[i + 2][j] > 0 || gamevalue[i + 2][j + 1] > 0 || gamevalue[i+2][j+3] > 0) {
+                            return i-1;
+                        } else {
+                            return i;
+                        }
+                    }//check if within right boundary
+                    else {
+                        if (i >= sizeX - 1) {
+                            return sizeX - 2;
+                        } else {
+                            return i;
+                        }
+                    }
+            }return i;
+        }
+
+            public int CheckXLeft(int t, int i, int j){
+                switch (t){
+                    case 1:
+                        //check right is empty
+                        if (i >= 0) {
+                            if (gamevalue[i][j] > 0 || gamevalue[i][j + 1] > 0 || gamevalue[i][j+3] > 0) {
+                                return i+1;
+                            } else {
+                                return i;
+                            }
+                        }//check if within right boundary
+                        else {
+                            if (i < 0) {
+                                return 0;
+                            } else {
+                                return i;
+                            }
+                        }
+                }return i;
+        }
 
         public void CheckRow(){
             boolean noGap;
@@ -278,7 +339,6 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
         }
         public void MoveLeft(){
             moveLeft = true;
-
         }
 }
     @Override
