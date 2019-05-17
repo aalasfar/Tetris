@@ -140,7 +140,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 n = false;
             }
         }
-int t = 1;
+int t = 2;
         public void move() {
                 //gamevalue[0][0]=6;
             //start at center
@@ -157,7 +157,7 @@ int t = 1;
                         //gamevalue[0][i - 1] = 0;
                         deleteblock(t,x,y+i-1);
                         //gamevalue[0][i] = 6;
-                        Tetrominos(1,x,i);
+                        Tetrominos(t,x,i);
                     }
                     if (moveRight){
                         deleteblock(t,x,i+y);
@@ -224,13 +224,12 @@ int t = 1;
                     }break;
                 case 2: // I block
                     for(int i=0; i<4; i++){
-                        gamevalue[i+coorX][i+coorY] = t;
+                        gamevalue[i+coorX][coorY] = t;
                     }break;
             }
         }
         /****************************************/
         public void deleteblock(int t, int coorX, int coorY){
-           // Tetrominos(t, coorX, coorY);
 
             switch(t) {
                 //O block
@@ -242,7 +241,7 @@ int t = 1;
                     }break;
                 case 2:     //I block
                     for(int i=0; i<4; i++){
-                        gamevalue[i+coorX][i+coorY]=0;
+                        gamevalue[i+coorX][coorY]=0;
                     }
             }
         }
