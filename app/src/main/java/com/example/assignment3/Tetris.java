@@ -83,14 +83,18 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
 
         @Override
         public void run() {
-            for(int j = 2; j < 9; j++) {
+            /*for(int j = 2; j < 9; j++) {
                 Tetrominos(1, j, 14);
             }
-            Tetrominos(1,2, 12);
+            Tetrominos(1,2, 12);*/
+            gamevalue[0][15] = 6;
+            gamevalue[1][15] = 6;
+
             while (running == true) {
                 //draw shapes
                 try {
                     Thread.sleep(50);
+                    moving = true;
                     move();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -140,7 +144,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 n = false;
             }
         }
-int t = 2;
+int t = 1;
         public void move() {
                 //gamevalue[0][0]=6;
             //start at center
@@ -179,7 +183,7 @@ int t = 2;
                         moveLeft = false;
                     }
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(400);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -249,6 +253,22 @@ int t = 2;
         public int CheckY(int t, int i, int j){
             switch (t) {
                 case 1:
+                    if (moving){
+                        if(j+1<=15){
+                            if(gamevalue[i][j+2] > 1 || gamevalue[i+1][j+2] > 1){
+                                return 0;
+                            }
+                            moving = false;
+                            int p = CheckY(t,i,j);
+                            if (p == 1){
+                                moving = true;
+                            }
+                            else if (p == 0 ) {
+                                return 0;
+                            }
+                            else {return 1;}
+                        }
+                    }
                     if(j+2 <= 14) {
                         if (gamevalue[i][j+2] > 0 || gamevalue[i+1][j+2] > 0){
                         return 0;
