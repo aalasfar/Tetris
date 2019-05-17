@@ -79,12 +79,12 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
             while (running == true) {
                 //draw shapes
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(50);
                     move();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                draw();
+                //draw();
             }
             //game.start();
         }
@@ -125,11 +125,6 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
                         }
                     }
                 }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 holder.unlockCanvasAndPost(grid);
                 n = false;
             }
@@ -137,19 +132,38 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
 
         public void move() {
             if (m == 0){
-             gamevalue[5][5]=2;
+             //gamevalue[0][0]=2;
+                Tetrominos(1,0,0);
              m++;
             }
             else if(m == 1){
-                for (int i = 5; i <15 ; i++) {
-                    gamevalue[5][i - 1] = 0;
-                    gamevalue[5][i] = 2;
+                //gamevalue[0][0]=2;
+                Tetrominos(1,0,0);
+                for (int i = 0; i <16 ; i++) {
+                    if (i == 0){
+                        //gamevalue[0][i]= 2;
+                        Tetrominos(1,0,i);
+                    }
+                    else {
+                        //gamevalue[0][i - 1] = 0;
+                        deleteblock(1,0,i-1);
+                        //gamevalue[0][i] = 7;
+                        Tetrominos(1,0,i);
+                    }
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+
                     draw();
+                    if (i == 15){
+                        break;
+                    }
+                    int check = Check(1, 1, i);
+                    if(check ==  0){
+                        break;
+                    }
                 }
             }
         }
@@ -172,7 +186,55 @@ public class Tetris extends AppCompatActivity implements View.OnTouchListener {
             game = new Thread(this);
             game.start();
         }
+        public void Tetrominos(int t, int coorX, int coorY){
+
+            switch(t) {
+                //O block
+                case 1:
+                    for(int i=0; i < 2; i++){
+                        if (coorY >= 15){
+                            break;
+                        }
+                        for(int j=0; j < 2; j++){
+                            if (coorX >= 9){
+                                break;
+                            }
+                            gamevalue[i+coorX][j+coorY] = t;
+                        }
+                    }
+                   // printboard();
+                    break;
+            }
+        }
+        public void deleteblock(int t, int coorX, int coorY){
+            switch(t) {
+                //O block
+                case 1:
+                    for(int i=0; i < 2; i++){
+                        for(int j=0; j < 2; j++){
+                            gamevalue[i+coorX][j+coorY] = 0;
+
+                        }
+                    }
+                    // printboard();
+                    break;
+            }
+        }
+        public int Check(int t, int i, int j){
+            switch (t) {
+                case 1:
+                    if(j+2 <= 14) {
+                        if (gamevalue[i + 2][j + 2] != 0){
+                        return 0;
+                        }
+                    else{
+                        return 1;
+                    }
+            }
+        }
+        return 1;
     }
+}
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
