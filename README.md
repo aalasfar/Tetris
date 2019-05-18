@@ -32,7 +32,8 @@ The following ****required**** functionality is complete:
 *  [ ]  Keeps a running score.
 *  [ ]  Shows the next piece to fall.
 *  [x]  Runs on emulator Android 9.0 (Pie) - API Level 28.
-*****How to Play and Game Functionalities *****
+## How to Play and Game Functionalities
+
 Game Controls:
 -Upswipe rotates object 90 degrees clockwise
 -Leftswipe to move object one block to the left
