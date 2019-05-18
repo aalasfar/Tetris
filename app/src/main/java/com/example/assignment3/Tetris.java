@@ -95,7 +95,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 try {
                     Thread.sleep(50);
                     moving = true;
-                    int type = 2;
+                    int type = 7;
                     move(type);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -149,7 +149,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 //gamevalue[0][0]=6;
             //start at center
             x=4;
-            int rotate = 3;
+            int rotate = 1;
                Tetrominos(type,x,y,rotate);
                 /**deleting previous block**/
 
@@ -291,6 +291,58 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                         gamevalue[coorX + 2][coorY] = t;
                         break;
                     }
+                case 6: // L mirror block
+                    if (rotate == 0) {
+                        gamevalue[coorX][coorY+2] = t;
+                        gamevalue[coorX+1][coorY] = t;
+                        gamevalue[coorX+1][coorY + 1] = t;
+                        gamevalue[coorX + 1][coorY + 2] = t;
+                        break;
+                    } else if(rotate == 1){
+                        gamevalue[coorX][coorY] = t;
+                        gamevalue[coorX][coorY + 1] = t;
+                        gamevalue[coorX + 1][coorY+1] = t;
+                        gamevalue[coorX + 2][coorY+1] = t;
+                        break;
+                    } else if (rotate == 2) {
+                        gamevalue[coorX][coorY] = t;
+                        gamevalue[coorX+1][coorY] = t;
+                        gamevalue[coorX][coorY + 1] = t;
+                        gamevalue[coorX][coorY + 2] = t;
+                        break;
+                    } else if(rotate == 3){
+                        gamevalue[coorX][coorY] = t;
+                        gamevalue[coorX + 1][coorY] = t;
+                        gamevalue[coorX + 2][coorY] = t;
+                        gamevalue[coorX + 2][coorY+1] = t;
+                        break;
+                    }
+                case 7: // T block
+                    if (rotate == 0) {
+                        gamevalue[coorX][coorY] = t;
+                        gamevalue[coorX+1][coorY] = t;
+                        gamevalue[coorX+1][coorY + 1] = t;
+                        gamevalue[coorX + 2][coorY] = t;
+                        break;
+                    } else if(rotate == 1){
+                        gamevalue[coorX+1][coorY] = t;
+                        gamevalue[coorX+1][coorY + 1] = t;
+                        gamevalue[coorX][coorY+1] = t;
+                        gamevalue[coorX + 1][coorY+2] = t;
+                        break;
+                    } else if (rotate == 2) {
+                        gamevalue[coorX+1][coorY] = t;
+                        gamevalue[coorX][coorY+1] = t;
+                        gamevalue[coorX + 1][coorY + 1] = t;
+                        gamevalue[coorX + 2][coorY + 1] = t;
+                        break;
+                    } else if(rotate == 3){
+                        gamevalue[coorX][coorY] = t;
+                        gamevalue[coorX][coorY + 1] = t;
+                        gamevalue[coorX][coorY + 2] = t;
+                        gamevalue[coorX + 1][coorY+1] = t;
+                        break;
+                    }
             }
         }
         /****************************************/
@@ -368,6 +420,58 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                         gamevalue[coorX + 1][coorY + 1] = 0;
                         gamevalue[coorX + 2][coorY + 1] = 0;
                         gamevalue[coorX + 2][coorY] = 0;
+                        break;
+                    }
+                case 6: // L mirror block
+                    if (rotate == 0) {
+                        gamevalue[coorX][coorY+2] = 0;
+                        gamevalue[coorX+1][coorY] = 0;
+                        gamevalue[coorX+1][coorY + 1] = 0;
+                        gamevalue[coorX + 1][coorY + 2] = 0;
+                        break;
+                    } else if(rotate == 1){
+                        gamevalue[coorX][coorY] = 0;
+                        gamevalue[coorX][coorY + 1] = 0;
+                        gamevalue[coorX + 1][coorY+1] = 0;
+                        gamevalue[coorX + 2][coorY+1] = 0;
+                        break;
+                    } else if (rotate == 2) {
+                        gamevalue[coorX][coorY] = 0;
+                        gamevalue[coorX+1][coorY] = 0;
+                        gamevalue[coorX][coorY + 1] = 0;
+                        gamevalue[coorX][coorY + 2] = 0;
+                        break;
+                    } else if(rotate == 3){
+                        gamevalue[coorX][coorY] = 0;
+                        gamevalue[coorX + 1][coorY] = 0;
+                        gamevalue[coorX + 2][coorY] = 0;
+                        gamevalue[coorX + 2][coorY+1] = 0;
+                        break;
+                    }
+                case 7: // T block
+                    if (rotate == 0) {
+                        gamevalue[coorX][coorY] = 0;
+                        gamevalue[coorX+1][coorY] = 0;
+                        gamevalue[coorX+1][coorY + 1] = 0;
+                        gamevalue[coorX + 2][coorY] = 0;
+                        break;
+                    } else if(rotate == 1){
+                        gamevalue[coorX+1][coorY] = 0;
+                        gamevalue[coorX+1][coorY + 1] = 0;
+                        gamevalue[coorX][coorY+1] = 0;
+                        gamevalue[coorX + 1][coorY+2] = 0;
+                        break;
+                    } else if (rotate == 2) {
+                        gamevalue[coorX+1][coorY] = 0;
+                        gamevalue[coorX][coorY+1] = 0;
+                        gamevalue[coorX + 1][coorY + 1] = 0;
+                        gamevalue[coorX + 1][coorY + 2] = 0;
+                        break;
+                    } else if(rotate == 3){
+                        gamevalue[coorX][coorY] = 0;
+                        gamevalue[coorX][coorY + 1] = 0;
+                        gamevalue[coorX][coorY + 2] = 0;
+                        gamevalue[coorX + 1][coorY+1] = 0;
                         break;
                     }
             }
