@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
@@ -30,6 +31,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
     final int gridH = 99; // height of each grid
     public static final int SWIPE = 100;
     public static final int SWIPE_VELOCITY = 100;
+    int score = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,8 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
             gameboard[1][k] = gridH * k;
         }
         setContentView(view);
+        //TextView TheScore = (TextView) findViewById(R.id.ScoreNum);
+       //TheScore.setText("score");
     }
 
     @Override
@@ -96,6 +100,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                     int type = rand.nextInt((7-1)+1) +1 ;
                     moving = true;
                     move(type);
+                    score = score + 10;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -1521,6 +1526,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 gamespeed = gamespeed - 10;
             }
             CheckRow();
+            score = score + 100;
         }
 
         public void MoveRight(){
