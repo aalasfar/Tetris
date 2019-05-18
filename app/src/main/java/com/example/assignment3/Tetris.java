@@ -34,8 +34,8 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();*/
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
         gameboard[0] = new float[10];   // for converting the pixels to blocks
         gameboard[1] = new float[16];  // for converting the pixels to blocks
         view = new TetrisView(this);
@@ -114,7 +114,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                     continue;
                 }
                 Canvas grid = holder.lockCanvas();
-                grid.drawARGB(255, 150, 150, 150);
+                grid.drawARGB(255, 0, 0, 0);
                 for (int i = 0; i < 10; i++) {
                     for (int q = 0; q < 16; q++) {
                         switch (gamevalue[i][q]) {

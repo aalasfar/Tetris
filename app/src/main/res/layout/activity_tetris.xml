@@ -7,6 +7,13 @@
     tools:context=".Tetris">
 
 
+    <TextView
+        android:id="@+id/ScoreNum"
+        android:layout_width="wrap_content"
+        android:layout_height="12dp"
+        android:text="Score"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="702dp" />
 </android.support.constraint.ConstraintLayout>
 
 
