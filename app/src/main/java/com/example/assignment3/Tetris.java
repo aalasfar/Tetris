@@ -95,7 +95,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 try {
                     Thread.sleep(50);
                     moving = true;
-                    int type = 2;
+                    int type = 3;
                     move(type);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -149,7 +149,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 //gamevalue[0][0]=6;
             //start at center
             x=4;
-            int rotate = 3;
+            int rotate = 2;
                Tetrominos(type,x,y,rotate);
                 /**deleting previous block**/
 
@@ -315,7 +315,8 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                             gamevalue[coorX][i + coorY] = 0;
                         }
                     }
-                case 3:
+                    break;
+                case 3:  // S block
                     if (rotate == 0 || rotate == 2) {
                         gamevalue[coorX][coorY + 1] = 0;
                         gamevalue[coorX + 1][coorY + 1] = 0;
@@ -437,9 +438,20 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                                 return 1;
                             }
                         }
-                    }
-        }
-        return 1;
+                    }break;
+                case 3:
+                    if ( rotate == 0 || rotate == 2) {
+                        
+                        if(gamevalue[i][j+2] > 0 || gamevalue[i+1][j+2] > 0){
+
+                        }
+
+                    }else if ( rotate == 1 || rotate == 3) {
+
+                    }break;
+            }
+
+                        return 1;
     }
     /***************************************************/
         public int CheckXRight(int t, int i, int j, int rotate) {
