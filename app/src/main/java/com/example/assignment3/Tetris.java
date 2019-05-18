@@ -19,15 +19,15 @@ import java.util.Random;
 public class Tetris extends AppCompatActivity implements GestureDetector.OnGestureListener {
     private final GestureDetector gestureDetector = new GestureDetector(this);
     TetrisView view;
-    static final int sizeX = 10;
-    static final int sizeY = 16;
+    static final int sizeX = 10; //size in X
+    static final int sizeY = 16; //size in Y
     Bitmap yellow, blue, red, green, lblue, purple, orange;
     float gameboard[][] = new float[2][];
-    int gamevalue[][] = new int[sizeX][sizeY];
+    int gamevalue[][] = new int[sizeX][sizeY]; //array that stores the values for each bitmap
     int x = 0;
     int y = 0;
-    final int gridW = 108;
-    final int gridH = 99;
+    final int gridW = 108; //width of each grid
+    final int gridH = 99; // height of each grid
     public static final int SWIPE = 100;
     public static final int SWIPE_VELOCITY = 100;
 
@@ -36,8 +36,8 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
         super.onCreate(savedInstanceState);
         /*ActionBar actionBar = getSupportActionBar();
         actionBar.hide();*/
-        gameboard[0] = new float[10];
-        gameboard[1] = new float[16];
+        gameboard[0] = new float[10];   // for converting the pixels to blocks
+        gameboard[1] = new float[16];  // for converting the pixels to blocks
         view = new TetrisView(this);
         yellow = BitmapFactory.decodeResource(getResources(), R.drawable.yellowblock);
         blue = BitmapFactory.decodeResource(getResources(), R.drawable.blueblock);
@@ -53,7 +53,6 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
         for (int k = 0; k < 16; k++) {
             gameboard[1][k] = gridH * k;
         }
-       // gamevalue[5][5] = 2;
         setContentView(view);
     }
 
@@ -106,6 +105,8 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
             }
         }
 
+        /** Method for drawing the bitmaps**/
+        //There are 7 bitmaps that are used for drawing the Tetrominos
         public void draw() {
             boolean n = true;
             while (n) {
@@ -146,6 +147,8 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 n = false;
             }
         }
+        /************** Method for calling everything *************/
+        // in move, most methods are called. Here we draw the Tetrominos, move it, delete, and check for horizontal line of full blocks
         public void move(int type) {
             //start at center
             x=4;
@@ -247,6 +250,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
             game.start();
         }
         /*********************************************/
+        /**Method for drawing Tetrominos**/
         public void Tetrominos(int t, int coorX, int coorY, int rotate){
             switch(t) {
                 //O block
@@ -378,6 +382,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
             }
         }
         /****************************************/
+        /** Method for deleting blocks after moving **/
         public void deleteblock(int t, int coorX, int coorY, int rotate){
 
             switch(t) {
@@ -509,6 +514,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
             }
         }
         /******************************************/
+        /** Method for checking Vertically for stacking**/
         public int CheckY(int t, int i, int j, int rotate){
             switch (t) {
                 case 1:
@@ -1041,6 +1047,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                         return 1;
     }
     /***************************************************/
+    /** Method for checking right**/
     public int CheckXRight(int t, int i, int j, int rotate) {
         switch (t) {
             case 1:
@@ -1257,7 +1264,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
         }
         return i;
     }
-
+/**************************Method for checking left*************************/
         public int CheckXLeft(int t, int i, int j, int rotate){
             switch (t){
                 case 1:
@@ -1468,7 +1475,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
             }
             return i;
         }
-
+/********************Method for rotating *****************/
         public int CheckRotate(int t, int i, int j, int rotate ){
             int left;
             int right;
