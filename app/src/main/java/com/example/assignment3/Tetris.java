@@ -149,7 +149,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 //gamevalue[0][0]=6;
             //start at center
             x=4;
-            int rotate = 1;
+            int rotate = 3;
                Tetrominos(type,x,y,rotate);
                 /**deleting previous block**/
 
@@ -219,22 +219,76 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
             switch(t) {
                 //O block
                 case 1:
-                    for(int i=0; i < 2; i++){
-                        for(int j=0; j < 2; j++){
-                            gamevalue[i+coorX][j+coorY] = t;
+                    for (int i = 0; i < 2; i++) {
+                        for (int j = 0; j < 2; j++) {
+                            gamevalue[i + coorX][j + coorY] = t;
                         }
-                    }break;
+                    }
+                    break;
                 case 2: // I block
-                    if ( rotate == 0 || rotate == 2) {
+                    if (rotate == 0 || rotate == 2) {
                         for (int i = 0; i < 4; i++) {
                             gamevalue[i + coorX][coorY] = t;
                         }
                         break;
-                    }
-                    else if (rotate == 1 || rotate == 3){
-                        for (int i = 0; i < 4; i++){
-                            gamevalue[coorX][i+coorY] = t;
+                    } else if (rotate == 1 || rotate == 3) {
+                        for (int i = 0; i < 4; i++) {
+                            gamevalue[coorX][i + coorY] = t;
                         }
+                        break;
+                    }
+                case 3: // S block
+                    if (rotate == 0 || rotate == 2) {
+                        gamevalue[coorX][coorY + 1] = t;
+                        gamevalue[coorX + 1][coorY + 1] = t;
+                        gamevalue[coorX + 1][coorY] = t;
+                        gamevalue[coorX + 2][coorY] = t;
+                        break;
+                    } else if(rotate == 1 || rotate == 3){
+                        gamevalue[coorX][coorY] = t;
+                        gamevalue[coorX][coorY + 1] = t;
+                        gamevalue[coorX + 1][coorY + 1] = t;
+                        gamevalue[coorX + 1][coorY + 2] = t;
+                        break;
+                    }
+                case 4: // Z block
+                    if (rotate == 0 || rotate == 2) {
+                        gamevalue[coorX][coorY] = t;
+                        gamevalue[coorX + 1][coorY] = t;
+                        gamevalue[coorX + 1][coorY + 1] = t;
+                        gamevalue[coorX + 2][coorY + 1] = t;
+                        break;
+                    } else if(rotate == 1 || rotate == 3){
+                        gamevalue[coorX + 1][coorY] = t;
+                        gamevalue[coorX + 1][coorY + 1] = t;
+                        gamevalue[coorX][coorY + 1] = t;
+                        gamevalue[coorX][coorY + 2] = t;
+                        break;
+                    }
+                case 5: // L block
+                    if (rotate == 0) {
+                        gamevalue[coorX][coorY] = t;
+                        gamevalue[coorX][coorY + 1] = t;
+                        gamevalue[coorX][coorY + 2] = t;
+                        gamevalue[coorX + 1][coorY + 2] = t;
+                        break;
+                    } else if(rotate == 1){
+                        gamevalue[coorX][coorY + 1] = t;
+                        gamevalue[coorX][coorY + 2] = t;
+                        gamevalue[coorX + 1][coorY + 1] = t;
+                        gamevalue[coorX + 2][coorY + 1] = t;
+                        break;
+                    } else if (rotate == 2) {
+                        gamevalue[coorX][coorY] = t;
+                        gamevalue[coorX + 1][coorY] = t;
+                        gamevalue[coorX + 1][coorY + 1] = t;
+                        gamevalue[coorX + 1][coorY + 2] = t;
+                        break;
+                    } else if(rotate == 3){
+                        gamevalue[coorX][coorY + 1] = t;
+                        gamevalue[coorX + 1][coorY + 1] = t;
+                        gamevalue[coorX + 2][coorY + 1] = t;
+                        gamevalue[coorX + 2][coorY] = t;
                         break;
                     }
             }
@@ -260,6 +314,60 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                         for (int i = 0; i < 4; i++) {
                             gamevalue[coorX][i + coorY] = 0;
                         }
+                    }
+                case 3:
+                    if (rotate == 0 || rotate == 2) {
+                        gamevalue[coorX][coorY + 1] = 0;
+                        gamevalue[coorX + 1][coorY + 1] = 0;
+                        gamevalue[coorX + 1][coorY] = 0;
+                        gamevalue[coorX + 2][coorY] = 0;
+                        break;
+                    } else if(rotate == 1 || rotate == 3){
+                        gamevalue[coorX][coorY] = 0;
+                        gamevalue[coorX][coorY + 1] = 0;
+                        gamevalue[coorX + 1][coorY + 1] = 0;
+                        gamevalue[coorX + 1][coorY + 2] = 0;
+                        break;
+                    }
+                case 4: // Z block
+                    if (rotate == 0 || rotate == 2) {
+                        gamevalue[coorX][coorY] = 0;
+                        gamevalue[coorX + 1][coorY] = 0;
+                        gamevalue[coorX + 1][coorY + 1] = 0;
+                        gamevalue[coorX + 2][coorY + 1] = 0;
+                        break;
+                    } else if(rotate == 1 || rotate == 3){
+                        gamevalue[coorX + 1][coorY] = 0;
+                        gamevalue[coorX + 1][coorY + 1] = 0;
+                        gamevalue[coorX][coorY + 1] = 0;
+                        gamevalue[coorX][coorY + 2] = 0;
+                        break;
+                    }
+                case 5: // L block
+                    if (rotate == 0) {
+                        gamevalue[coorX][coorY] = 0;
+                        gamevalue[coorX][coorY + 1] = 0;
+                        gamevalue[coorX][coorY + 2] = 0;
+                        gamevalue[coorX + 1][coorY + 2] = 0;
+                        break;
+                    } else if(rotate == 1){
+                        gamevalue[coorX][coorY + 1] = 0;
+                        gamevalue[coorX][coorY + 2] = 0;
+                        gamevalue[coorX + 1][coorY + 1] = 0;
+                        gamevalue[coorX + 2][coorY + 1] = 0;
+                        break;
+                    } else if (rotate == 2) {
+                        gamevalue[coorX][coorY] = 0;
+                        gamevalue[coorX + 1][coorY] = 0;
+                        gamevalue[coorX + 1][coorY + 1] = 0;
+                        gamevalue[coorX + 1][coorY + 2] = 0;
+                        break;
+                    } else if(rotate == 3){
+                        gamevalue[coorX][coorY + 1] = 0;
+                        gamevalue[coorX + 1][coorY + 1] = 0;
+                        gamevalue[coorX + 2][coorY + 1] = 0;
+                        gamevalue[coorX + 2][coorY] = 0;
+                        break;
                     }
             }
         }
@@ -303,12 +411,12 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                         }
                     }
                     else if ( rotate == 1 || rotate == 3) {
-                        if ( j == sizeY - 3){
+                        if ( j == sizeY - 4){
                             return 0;
                         }
                         if (moving){
-                            if(j+1<=12){
-                                if(gamevalue[i][j+1] == t|| gamevalue[i][j+2] == t || gamevalue[i][j+3] == t){
+                            if(j+3<=12){
+                                if(gamevalue[i][j+4] == t){
                                     return 0;
                                 }
                                 moving = false;
@@ -322,8 +430,8 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                                 else {return 1;}
                             }
                         }
-                        if (j + 1 <= 12) {
-                            if (gamevalue[i][j + 3] > 0) {
+                        if (j <= 15) {
+                            if (gamevalue[i][j + 4] > 0) {
                                 return 0;
                             } else {
                                 return 1;
