@@ -39,7 +39,7 @@ Game Controls:
 *  -Leftswipe to move object one block to the left
 *  -Rightswipe to move object one block to the right
 *  -Downswipe makes object go to bottom of stack
-* Game Functionalities also Errors and Bugs:
+Game Functionalities also Errors and Bugs:
 *  -game does not have gameover feature so when objects reach the top they continuously print
 *  -swiping left and right has bug that they may phase through each other
 *  -increase of game speed is pretty slow but can but is increased when row is cleared 
