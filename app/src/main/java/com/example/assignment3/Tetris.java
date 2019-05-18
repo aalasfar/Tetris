@@ -95,7 +95,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 try {
                     Thread.sleep(50);
                     moving = true;
-                    int type = 3;
+                    int type = 2;
                     move(type);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -149,7 +149,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 //gamevalue[0][0]=6;
             //start at center
             x=4;
-            int rotate = 2;
+            int rotate = 3;
                Tetrominos(type,x,y,rotate);
                 /**deleting previous block**/
 
@@ -273,10 +273,10 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                         gamevalue[coorX + 1][coorY + 2] = t;
                         break;
                     } else if(rotate == 1){
+                        gamevalue[coorX][coorY] = t;
                         gamevalue[coorX][coorY + 1] = t;
-                        gamevalue[coorX][coorY + 2] = t;
-                        gamevalue[coorX + 1][coorY + 1] = t;
-                        gamevalue[coorX + 2][coorY + 1] = t;
+                        gamevalue[coorX + 1][coorY] = t;
+                        gamevalue[coorX + 2][coorY] = t;
                         break;
                     } else if (rotate == 2) {
                         gamevalue[coorX][coorY] = t;
@@ -352,10 +352,10 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                         gamevalue[coorX + 1][coorY + 2] = 0;
                         break;
                     } else if(rotate == 1){
+                        gamevalue[coorX][coorY] = 0;
                         gamevalue[coorX][coorY + 1] = 0;
-                        gamevalue[coorX][coorY + 2] = 0;
-                        gamevalue[coorX + 1][coorY + 1] = 0;
-                        gamevalue[coorX + 2][coorY + 1] = 0;
+                        gamevalue[coorX + 1][coorY] = 0;
+                        gamevalue[coorX + 2][coorY] = 0;
                         break;
                     } else if (rotate == 2) {
                         gamevalue[coorX][coorY] = 0;
@@ -441,58 +441,336 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                     }break;
                 case 3:
                     if ( rotate == 0 || rotate == 2) {
-                        
-                        if(gamevalue[i][j+2] > 0 || gamevalue[i+1][j+2] > 0){
-
+                        if ( j == sizeY - 2){
+                            return 0;
+                        }
+                        if (moving){
+                            if(j+2<=14){
+                                if(gamevalue[i+1][j+2] == t ||gamevalue[i][j+2]==t || gamevalue[i+2][j+1]==t ){
+                                    return 0;
+                                }
+                                moving = false;
+                                int p = CheckY(t,i,j,rotate);
+                                if (p == 1){
+                                    moving = true;
+                                }
+                                else if (p == 0 ) {
+                                    return 0;
+                                }
+                                else {return 1;}
+                            }
+                        }
+                        if (j <= 15) {
+                            if (gamevalue[i+1][j+2] > 0|| gamevalue[i][j+2]>0 || gamevalue[i+2][j+1]>0) {
+                                return 0;
+                            } else {
+                                return 1;
+                            }
                         }
 
-                    }else if ( rotate == 1 || rotate == 3) {
+                    }
+                    if ( rotate == 1 || rotate == 3) {
+                    if ( j == sizeY - 3){
+                        return 0;
+                    }
+                    if (moving){
+                        if(j+3<=12){
+                            if(gamevalue[i][j+2] == t || gamevalue[i+1][j+3] == t){
+                                return 0;
+                            }
+                            moving = false;
+                            int p = CheckY(t,i,j,rotate);
+                            if (p == 1){
+                                moving = true;
+                            }
+                            else if (p == 0 ) {
+                                return 0;
+                            }
+                            else {return 1;}
+                        }
+                    }
+                    if (j <= 15) {
+                        if (gamevalue[i][j+2] > 0 || gamevalue[i+1][j+3] > 0) {
+                            return 0;
+                        } else {
+                            return 1;
+                        }
+                    }
+                }break;
+                case 4:
+                    if ( rotate == 0 || rotate == 2) {
+                        if ( j == sizeY - 2){
+                            return 0;
+                        }
+                        if (moving){
+                            if(j+2<=14){
+                                if(gamevalue[i][j+1] == t ||gamevalue[i+1][j+2]==t || gamevalue[i+2][j+2]==t ){
+                                    return 0;
+                                }
+                                moving = false;
+                                int p = CheckY(t,i,j,rotate);
+                                if (p == 1){
+                                    moving = true;
+                                }
+                                else if (p == 0 ) {
+                                    return 0;
+                                }
+                                else {return 1;}
+                            }
+                        }
+                        if (j <= 15) {
+                            if (gamevalue[i][j+1] > 0 ||gamevalue[i+1][j+2]>0 || gamevalue[i+2][j+2]>0) {
+                                return 0;
+                            } else {
+                                return 1;
+                            }
+                        }
 
+                    }
+                    if ( rotate == 1 || rotate == 3) {
+                        if ( j == sizeY - 3){
+                            return 0;
+                        }
+                        if (moving){
+                            if(j+3<=12){
+                                if(gamevalue[i][j+3] == t || gamevalue[i+1][j+2] == t){
+                                    return 0;
+                                }
+                                moving = false;
+                                int p = CheckY(t,i,j,rotate);
+                                if (p == 1){
+                                    moving = true;
+                                }
+                                else if (p == 0 ) {
+                                    return 0;
+                                }
+                                else {return 1;}
+                            }
+                        }
+                        if (j <= 15) {
+                            if (gamevalue[i][j+3] > 0 || gamevalue[i+1][j+2] > 0) {
+                                return 0;
+                            } else {
+                                return 1;
+                            }
+                        }
                     }break;
+                case 5:
+                    if ( rotate == 0) {
+                        if ( j == sizeY - 3){
+                            return 0;
+                        }
+                        if (moving){
+                            if(j+3<=12){
+                                if(gamevalue[i][j+3] == t ||gamevalue[i+1][j+3]==t){
+                                    return 0;
+                                }
+                                moving = false;
+                                int p = CheckY(t,i,j,rotate);
+                                if (p == 1){
+                                    moving = true;
+                                }
+                                else if (p == 0 ) {
+                                    return 0;
+                                }
+                                else {return 1;}
+                            }
+                        }
+                        if (j <= 15) {
+                            if (gamevalue[i][j+3] > 0 ||gamevalue[i+1][j+3]>0) {
+                                return 0;
+                            } else {
+                                return 1;
+                            }
+                        }
+
+                    }
+                    if ( rotate == 1) {
+                        if ( j == sizeY - 2){
+                            return 0;
+                        }
+                        if (moving){
+                            if(j+2<=13){
+                                if(gamevalue[i][j+2] == t || gamevalue[i+1][j+1] == t|| gamevalue[i+2][j+1] == t){
+                                    return 0;
+                                }
+                                moving = false;
+                                int p = CheckY(t,i,j,rotate);
+                                if (p == 1){
+                                    moving = true;
+                                }
+                                else if (p == 0 ) {
+                                    return 0;
+                                }
+                                else {return 1;}
+                            }
+                        }
+                        if (j <= 15) {
+                            if (gamevalue[i][j+2] > 0 || gamevalue[i+1][j+1] > 0 || gamevalue[i+2][j+1]>1) {
+                                return 0;
+                            } else {
+                                return 1;
+                            }
+                        }
+                    }
+                    if (rotate == 2) {
+                        if ( j == sizeY - 3){
+                            return 0;
+                        }
+                        if (moving){
+                            if(j+3<=12){
+                                if(gamevalue[i][j+1] == t ||gamevalue[i+1][j+3]==t){
+                                    return 0;
+                                }
+                                moving = false;
+                                int p = CheckY(t,i,j,rotate);
+                                if (p == 1){
+                                    moving = true;
+                                }
+                                else if (p == 0 ) {
+                                    return 0;
+                                }
+                                else {return 1;}
+                            }
+                        }
+                        if (j <= 15) {
+                            if (gamevalue[i][j+1] > 0 ||gamevalue[i+1][j+3]>0) {
+                                return 0;
+                            } else {
+                                return 1;
+                            }
+                        }
+
+                    }
+                    if (rotate == 3) {
+                        if ( j == sizeY - 2){
+                            return 0;
+                        }
+                        if (moving){
+                            if(j+2<=13){
+                                if(gamevalue[i][j+2] == t || gamevalue[i+1][j+2] == t|| gamevalue[i+2][j+2] == t){
+                                    return 0;
+                                }
+                                moving = false;
+                                int p = CheckY(t,i,j,rotate);
+                                if (p == 1){
+                                    moving = true;
+                                }
+                                else if (p == 0 ) {
+                                    return 0;
+                                }
+                                else {return 1;}
+                            }
+                        }
+                        if (j <= 15) {
+                            if (gamevalue[i][j+2] > 0 || gamevalue[i+1][j+2] > 0|| gamevalue[i+2][j+2] >0) {
+                                return 0;
+                            } else {
+                                return 1;
+                            }
+                        }
+                    }break;
+
+
             }
 
                         return 1;
     }
     /***************************************************/
-        public int CheckXRight(int t, int i, int j, int rotate) {
-            switch (t) {
-                case 1:
-                    //check right is empty
-                    if (i + 2 <= sizeX - 2) {
-                        if (gamevalue[i + 2][j] > 0 || gamevalue[i + 2][j + 1] > 0 || gamevalue[i+2][j+3] > 0) {
-                            return i-1;
-                        } else { return i; }
-                    }//check if within right boundary
-                    else {
-                        if (i >= sizeX - 1) {
-                            return sizeX - 2;
+    public int CheckXRight(int t, int i, int j, int rotate) {
+        switch (t) {
+            case 1:
+                //check right is empty
+                if (i + 2 <= sizeX - 2) {
+                    if (gamevalue[i + 2][j] > 0 || gamevalue[i + 2][j + 1] > 0 || gamevalue[i + 2][j + 3] > 0) {
+                        return i - 1;
+                    } else {
+                        return i;
+                    }
+                }//check if within right boundary
+                else {
+                    if (i >= sizeX - 1) {
+                        return sizeX - 2;
+                    } else {
+                        return i;
+                    }
+                }
+            case 2:
+                if (rotate == 0 || rotate == 2) {
+                    if (i + 4 <= sizeX - 4) {
+                        if (gamevalue[i + 4][j] > 0) {
+                            return i - 1;
+                        } else {
+                            return i;
+                        }
+                    } else {
+                        if (i >= sizeX - 3) {
+                            return sizeX - 4;
                         } else { return i; }
                     }
-                case 2:
-
-            }return i;
-
+                }else if (rotate == 1 || rotate == 3) {
+                    if (i <= sizeX-1) {
+                        if (gamevalue[i][j]>0 || gamevalue[i][j+1]>0 || gamevalue[i][j+2]>0 || gamevalue[i][j+3]>0) {
+                            return i - 1;
+                        } else {
+                            return i;
+                        }
+                    } else {
+                        if (i >= sizeX) {
+                            return sizeX - 1;
+                        } else { return i; }
+                    }
+                }break;
         }
+        return i;
+    }
 
-            public int CheckXLeft(int t, int i, int j, int rotate){
-                switch (t){
-                    case 1:
-                        //check right is empty
+        public int CheckXLeft(int t, int i, int j, int rotate){
+            switch (t){
+                case 1:
+                    //check right is empty
+                    if (i >= 0) {
+                        if (gamevalue[i][j] > 0 || gamevalue[i][j + 1] > 0 || gamevalue[i][j+3] > 0) {
+                            return i+1;
+                        } else {
+                            return i;
+                        }
+                    }//check if within right boundary
+                    else {
+                        if (i < 0) {
+                            return 0;
+                        } else {
+                            return i;
+                        }
+                    }
+                case 2:
+                    if (rotate == 0 || rotate == 2) {
                         if (i >= 0) {
-                            if (gamevalue[i][j] > 0 || gamevalue[i][j + 1] > 0 || gamevalue[i][j+3] > 0) {
-                                return i+1;
+                            if (gamevalue[i][j] > 0) {
+                                return i + 1;
                             } else {
                                 return i;
                             }
-                        }//check if within right boundary
-                        else {
+                        } else {
                             if (i < 0) {
                                 return 0;
+                            } else { return i; }
+                        }
+                    }else if (rotate == 1 || rotate == 3) {
+                        if (i >= 0) {
+                            if (gamevalue[i][j]>0 || gamevalue[i+1][j]>0 || gamevalue[i+2][j]>0 || gamevalue[i+3][j]>0) {
+                                return i + 1;
                             } else {
                                 return i;
                             }
+                        } else {
+                            if (i < 0) {
+                                return 0;
+                            } else { return i; }
                         }
-                }return i;
+                    }break;
+            }
+            return i;
         }
 
         public void CheckRow(){
