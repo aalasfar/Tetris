@@ -32,8 +32,8 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+        /*ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();*/
         gameboard[0] = new float[10];
         gameboard[1] = new float[16];
         view = new TetrisView(this);
@@ -95,7 +95,8 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 try {
                     Thread.sleep(50);
                     moving = true;
-                    move();
+                    int type = 2;
+                    move(type);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -144,42 +145,42 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 n = false;
             }
         }
-int t = 2;
-        public void move() {
+        public void move(int type) {
                 //gamevalue[0][0]=6;
             //start at center
             x=4;
-               Tetrominos(t,x,y);
+            int rotate = 1;
+               Tetrominos(type,x,y,rotate);
                 /**deleting previous block**/
 
                 for (int i = 0; i <sizeY ; i++) {
                     if (i == 0){
                         //gamevalue[0][i]= 6;
-                        Tetrominos(t,x,i+y);
+                        Tetrominos(type,x,i+y, rotate);
                     }
                     else {
                         //gamevalue[0][i - 1] = 0;
-                        deleteblock(t,x,y+i-1);
+                        deleteblock(type,x,y+i-1,rotate);
                         //gamevalue[0][i] = 6;
-                        Tetrominos(t,x,i);
+                        Tetrominos(type,x,i, rotate);
                     }
                     if (moveRight){
-                        deleteblock(t,x,i+y);
+                        deleteblock(type,x,i+y, rotate);
                         x++;
                         //if(x >= 9){
                         //x=8;}
-                        x = CheckXRight(t, x, y+i);
-                        Tetrominos(t,x,y+i );
+                        x = CheckXRight(type, x, y+i,rotate);
+                        Tetrominos(type,x,y+i,rotate);
                         moveRight = false;
 
                     }
                     if (moveLeft){
-                        deleteblock(t,x,y+i);
+                        deleteblock(type,x,y+i,rotate);
                         x--;
                         //if (x <= 0){
                         //x=0;}
-                        x = CheckXLeft(t, x, y+i);
-                        Tetrominos(t,x,y+i);
+                        x = CheckXLeft(type, x, y+i, rotate);
+                        Tetrominos(type,x,y+i,rotate);
                         moveLeft = false;
                     }
                     try {
@@ -188,7 +189,7 @@ int t = 2;
                         e.printStackTrace();
                     }
                     draw();
-                    int check = CheckY(t, x, y+i);
+                    int check = CheckY(type, x, y+i,rotate);
                     if(check == 0){ break; }
                 }
             CheckRow();
@@ -214,7 +215,7 @@ int t = 2;
             game.start();
         }
         /*********************************************/
-        public void Tetrominos(int t, int coorX, int coorY){
+        public void Tetrominos(int t, int coorX, int coorY, int rotate){
             switch(t) {
                 //O block
                 case 1:
@@ -224,13 +225,22 @@ int t = 2;
                         }
                     }break;
                 case 2: // I block
-                    for(int i=0; i<4; i++){
-                        gamevalue[i+coorX][coorY] = t;
-                    }break;
+                    if ( rotate == 0 || rotate == 2) {
+                        for (int i = 0; i < 4; i++) {
+                            gamevalue[i + coorX][coorY] = t;
+                        }
+                        break;
+                    }
+                    else if (rotate == 1 || rotate == 3){
+                        for (int i = 0; i < 4; i++){
+                            gamevalue[coorX][i+coorY] = t;
+                        }
+                        break;
+                    }
             }
         }
         /****************************************/
-        public void deleteblock(int t, int coorX, int coorY){
+        public void deleteblock(int t, int coorX, int coorY, int rotate){
 
             switch(t) {
                 //O block
@@ -241,25 +251,32 @@ int t = 2;
                         }
                     }break;
                 case 2:     //I block
-                    for(int i=0; i<4; i++){
-                        gamevalue[i+coorX][coorY]=0;
+                    if ( rotate == 0 || rotate == 2) {
+                        for (int i = 0; i < 4; i++) {
+                            gamevalue[i + coorX][coorY] = 0;
+                        }
+                    }
+                    else if ( rotate == 1 || rotate == 3) {
+                        for (int i = 0; i < 4; i++) {
+                            gamevalue[coorX][i + coorY] = 0;
+                        }
                     }
             }
         }
         /******************************************/
-        public int CheckY(int t, int i, int j){
+        public int CheckY(int t, int i, int j, int rotate){
             switch (t) {
                 case 1:
-                    //if(j == 16 ){
-                      //  return 1;
-                    //}
+                    if(j == sizeY-2 ){
+                        return 0;
+                    }
                     if (moving){
                         if(j+1<=14){
-                            if(gamevalue[i][j+2] > 1 || gamevalue[i+1][j+2] > 1){
+                            if(gamevalue[i][j+2] == t || gamevalue[i+1][j+2] == t){
                                 return 0;
                             }
                             moving = false;
-                            int p = CheckY(t,i,j);
+                            int p = CheckY(t,i,j,rotate);
                             if (p == 1){
                                 moving = true;
                             }
@@ -269,44 +286,75 @@ int t = 2;
                             else {return 1;}
                         }
                     }
-                    if(j+2 <= 15) {
+                    if(j+2 <= sizeY-1) {
                         if (gamevalue[i][j+2] > 0 || gamevalue[i+1][j+2] > 0){
                         return 0;
                         }
                     else{ return 1; }
             }
                 case 2:
-                    if(j+1 <= 15){
-                        if(gamevalue[i][j+1]>0 || gamevalue[i+1][j+1]>0 || gamevalue[i+2][j+1]>0 || gamevalue[i+3][j+1]>0){
-                            return 0; }
-                        else{   return 1;   }
+                    if ( rotate == 0 || rotate == 2) {
+                        if (j + 1 <= sizeY-1) {
+                            if (gamevalue[i][j + 1] > 0 || gamevalue[i + 1][j + 1] > 0 || gamevalue[i + 2][j + 1] > 0 || gamevalue[i + 3][j + 1] > 0) {
+                                return 0;
+                            } else {
+                                return 1;
+                            }
+                        }
+                    }
+                    else if ( rotate == 1 || rotate == 3) {
+                        if ( j == sizeY - 3){
+                            return 0;
+                        }
+                        if (moving){
+                            if(j+1<=12){
+                                if(gamevalue[i][j+1] == t|| gamevalue[i][j+2] == t || gamevalue[i][j+3] == t){
+                                    return 0;
+                                }
+                                moving = false;
+                                int p = CheckY(t,i,j,rotate);
+                                if (p == 1){
+                                    moving = true;
+                                }
+                                else if (p == 0 ) {
+                                    return 0;
+                                }
+                                else {return 1;}
+                            }
+                        }
+                        if (j + 1 <= 12) {
+                            if (gamevalue[i][j + 3] > 0) {
+                                return 0;
+                            } else {
+                                return 1;
+                            }
+                        }
                     }
         }
         return 1;
     }
     /***************************************************/
-        public int CheckXRight(int t, int i, int j) {
+        public int CheckXRight(int t, int i, int j, int rotate) {
             switch (t) {
                 case 1:
                     //check right is empty
                     if (i + 2 <= sizeX - 2) {
                         if (gamevalue[i + 2][j] > 0 || gamevalue[i + 2][j + 1] > 0 || gamevalue[i+2][j+3] > 0) {
                             return i-1;
-                        } else {
-                            return i;
-                        }
+                        } else { return i; }
                     }//check if within right boundary
                     else {
                         if (i >= sizeX - 1) {
                             return sizeX - 2;
-                        } else {
-                            return i;
-                        }
+                        } else { return i; }
                     }
+                case 2:
+
             }return i;
+
         }
 
-            public int CheckXLeft(int t, int i, int j){
+            public int CheckXLeft(int t, int i, int j, int rotate){
                 switch (t){
                     case 1:
                         //check right is empty
