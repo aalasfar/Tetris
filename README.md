@@ -29,8 +29,8 @@ The following ****required**** functionality is complete:
 - Pushing the down button accelerates the piece downward and doesn't make it fall instantly.
 *  [x]  The piece stops when it hits another piece.
 *  [x]  If an entire horizontal line is full of blocks, it disappears.
-*  [ ]  Keeps a running score.
-*  [ ]  Shows the next piece to fall.
+*  [x]  Keeps a running score.
+*  [x]  Shows the next piece to fall.
 *  [x]  Runs on emulator Android 9.0 (Pie) - API Level 28.
 
 ## How to Play and Game Functionalities
@@ -43,9 +43,12 @@ Game Controls:
 
 Game Functionalities also Errors and Bugs:
 
-*  -game does not have gameover feature so when objects reach the top they continuously print
+*  -game does not restart after Game Over.
 *  -swiping left and right has bug that they may phase through each other
 *  -increase of game speed is pretty slow but can but is increased when row is cleared 
 *  -threads used to have game flow 
+*  -rotation is not as smooth (which is not required to be)
+
+
 
 
