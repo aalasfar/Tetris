@@ -612,7 +612,7 @@ public void drawGameOver(){
             }
                 case 2:
                     if ( rotate == 0 || rotate == 2) {
-                        if (j + 2 <= sizeY-2) {
+                        if (j + 3 <= sizeY-3) {
                             if (gamevalue[i][j + 1] > 0 || gamevalue[i + 1][j + 1] > 0 || gamevalue[i + 2][j + 1] > 0 || gamevalue[i + 3][j + 1] > 0) {
                                 return 0;
                             } else {
