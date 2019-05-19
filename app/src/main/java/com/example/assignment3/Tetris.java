@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +24,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
     TetrisView view;
     static final int sizeX = 10; //size in X
     static final int sizeY = 16; //size in Y
-    Bitmap yellow, blue, red, green, lblue, purple, orange;
+    Bitmap yellow, blue, red, green, lblue, purple, orange, oB, iB, sB, zB, lB, jB, tB;
     float gameboard[][] = new float[2][];
     int gamevalue[][] = new int[sizeX][sizeY]; //array that stores the values for each bitmap
     int x = 0;
@@ -32,6 +34,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
     public static final int SWIPE = 100;
     public static final int SWIPE_VELOCITY = 100;
     int score = 0;
+    int gameOver = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,25 +42,30 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
         gameboard[0] = new float[10];   // for converting the pixels to blocks
-        gameboard[1] = new float[16];  // for converting the pixels to blocks
+        gameboard[1] = new float[17];  // for converting the pixels to blocks
         view = new TetrisView(this);
-        yellow = BitmapFactory.decodeResource(getResources(), R.drawable.yellowblock);
-        blue = BitmapFactory.decodeResource(getResources(), R.drawable.blueblock);
-        red = BitmapFactory.decodeResource(getResources(), R.drawable.redblock);
-        green = BitmapFactory.decodeResource(getResources(), R.drawable.greenblock);
-        lblue = BitmapFactory.decodeResource(getResources(), R.drawable.lightblueblock);
-        orange = BitmapFactory.decodeResource(getResources(), R.drawable.orangeblock);
-        purple = BitmapFactory.decodeResource(getResources(), R.drawable.purpleblock);
+        yellow = BitmapFactory.decodeResource(getResources(), R.drawable.yellowblock); //O
+        blue = BitmapFactory.decodeResource(getResources(), R.drawable.blueblock); // L
+        red = BitmapFactory.decodeResource(getResources(), R.drawable.redblock); //Z
+        green = BitmapFactory.decodeResource(getResources(), R.drawable.greenblock); //S
+        lblue = BitmapFactory.decodeResource(getResources(), R.drawable.lightblueblock); // I
+        orange = BitmapFactory.decodeResource(getResources(), R.drawable.orangeblock); //J
+        purple = BitmapFactory.decodeResource(getResources(), R.drawable.purpleblock); // T
+        oB = BitmapFactory.decodeResource(getResources(),R.drawable.oblock);
+        iB = BitmapFactory.decodeResource(getResources(),R.drawable.iblock);
+        sB = BitmapFactory.decodeResource(getResources(),R.drawable.sblock);
+        zB = BitmapFactory.decodeResource(getResources(),R.drawable.zblock);
+        lB = BitmapFactory.decodeResource(getResources(),R.drawable.lblock);
+        jB = BitmapFactory.decodeResource(getResources(),R.drawable.jblock);
+        tB = BitmapFactory.decodeResource(getResources(),R.drawable.tblock);
+
         for (int k = 0; k < 10; k++) {
             gameboard[0][k] = gridW * k;
-
         }
-        for (int k = 0; k < 16; k++) {
+        for (int k = 1; k < 16; k++) {
             gameboard[1][k] = gridH * k;
         }
         setContentView(view);
-        //TextView TheScore = (TextView) findViewById(R.id.ScoreNum);
-       //TheScore.setText("score");
     }
 
     @Override
@@ -84,6 +92,8 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
         boolean moveRight = false;
         boolean moveLeft = false;
         int rotate = 0;
+        int next = 0;   // next rand number
+        Canvas grid = new Canvas();
 
         public TetrisView(Context context) {
             super(context);
@@ -92,24 +102,66 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
 
         @Override
         public void run() {
-            while (running == true) {
+            next = randNum();   //first random number
+
+            while (running) {
                 //draw shapes
                 try {
                     Thread.sleep(50);
-                    Random rand = new Random();
-                    int type = rand.nextInt((7-1)+1) +1 ;
                     moving = true;
-                    move(type);
+                    gameOver = CheckTop();
+                   // if(gameOver > 0){   resume();}
+                    move(next);
                     score = score + 10;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 draw();
-                running = GameOver();
-
+                if(gameOver > 0){
+                    drawGameOver();
+                    pause();}
+            }resume();
+        }
+/**generate random number**/
+public int randNum(){
+    Random rand = new Random();
+    int num = rand.nextInt((7 - 1) + 1) + 1;
+        return num;
+}
+        /** draw next Tetrominos**/
+        public void drawNext(int t) {
+            if (t == 1) {
+                grid.drawBitmap(oB, 900, 1620, null);
+            } else if (t == 2) {
+                grid.drawBitmap(iB, 900, 1620, null);
+            } else if (t == 3) {
+                grid.drawBitmap(sB, 900, 1620, null);
+            } else if (t == 4) {
+                grid.drawBitmap(zB, 900, 1620, null);
+            } else if (t == 5) {
+                grid.drawBitmap(lB, 900, 1620, null);
+            } else if (t == 6) {
+                grid.drawBitmap(jB, 900, 1620, null);
+            } else if (t == 7) {
+                grid.drawBitmap(tB, 900, 1620, null);
             }
         }
 
+            /*** draw game over ***/
+public void drawGameOver(){
+    grid = holder.lockCanvas();
+    grid.drawARGB(255, 0, 0, 0);
+    Paint paint2 = new Paint();
+    paint2.setColor(Color.RED);
+    paint2.setTextSize(140);
+    grid.drawText("Game Over!", 200, 800, paint2);
+    paint2.setTextSize(100);
+    grid.drawText("Score "+score, 320, 1100, paint2);
+    gameOver = 0;
+    score = 0;
+    holder.unlockCanvasAndPost(grid);
+
+}
         /** Method for drawing the bitmaps**/
         //There are 7 bitmaps that are used for drawing the Tetrominos
         public void draw() {
@@ -118,8 +170,17 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                 if (!holder.getSurface().isValid()) {
                     continue;
                 }
-                Canvas grid = holder.lockCanvas();
+                grid = holder.lockCanvas();
                 grid.drawARGB(255, 0, 0, 0);
+                /**************************/
+                /** Setting Scores **/
+                Paint paint = new Paint();
+                paint.setColor(Color.RED);
+                paint.setTextSize(40);
+                grid.drawText("Score "+score, 40, 1700, paint);
+                /*************************/
+                drawNext(next);
+                /**************************/
                 for (int i = 0; i < 10; i++) {
                     for (int q = 0; q < 16; q++) {
                         switch (gamevalue[i][q]) {
@@ -138,13 +199,12 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                             case 5: // L block
                                 grid.drawBitmap(blue, gameboard[0][i], gameboard[1][q], null);
                                 break;
-                            case 6: // Mirror L block
+                            case 6: // J block
                                 grid.drawBitmap(orange, gameboard[0][i], gameboard[1][q], null);
                                 break;
                             case 7: // T Block
                                 grid.drawBitmap(purple, gameboard[0][i], gameboard[1][q], null);
                                 break;
-
                         }
                     }
                 }
@@ -157,8 +217,10 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
         public void move(int type) {
             //start at center
             x=4;
+                /** deleting previous block**/
                Tetrominos(type,x,y,rotate);
-                /**deleting previous block**/
+                /** next tetrominos**/
+                next = randNum();
 
                 for (int i = 0; i <sizeY ; i++) {
                     if (i == 0){
@@ -245,12 +307,12 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                     e.printStackTrace();
                 }
                 break;
-            }
-            game = null;
+            }game = null;
         }
 
         public void resume() {
             running = true;
+            score = 0;
             game = new Thread(this);
             game.start();
         }
@@ -332,7 +394,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                         gamevalue[coorX + 2][coorY] = t;
                         break;
                     }
-                case 6: // L mirror block
+                case 6: // J block
                     if (rotate == 0) {
                         gamevalue[coorX][coorY+2] = t;
                         gamevalue[coorX+1][coorY] = t;
@@ -550,7 +612,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
             }
                 case 2:
                     if ( rotate == 0 || rotate == 2) {
-                        if (j + 1 <= sizeY-1) {
+                        if (j + 2 <= sizeY-2) {
                             if (gamevalue[i][j + 1] > 0 || gamevalue[i + 1][j + 1] > 0 || gamevalue[i + 2][j + 1] > 0 || gamevalue[i + 3][j + 1] > 0) {
                                 return 0;
                             } else {
@@ -1258,7 +1320,7 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
 
                 }else if(rotate == 3){
                     if(i + 2 <= sizeX - 2){
-                        if(gamevalue[i+1][j]>0 || gamevalue[i+2][j+1]>0 || gamevalue[i+1][j+3]>0){
+                        if(gamevalue[i+1][j]>0 || gamevalue[i+2][j+1]>0 || gamevalue[i+1][j+2]>0){
                             return i - 1;
                         }else{  return i;}
                     }else{
@@ -1479,6 +1541,15 @@ public class Tetris extends AppCompatActivity implements GestureDetector.OnGestu
                     }
             }
             return i;
+        }
+
+        /** Check Top**/
+        public int CheckTop(){
+            for(int i = 0; i < sizeX; i++) {
+                if (gamevalue[i][0] > 0) {
+                    return 1; }
+                else{ continue; }
+            }return 0;
         }
 /********************Method for rotating *****************/
         public int CheckRotate(int t, int i, int j, int rotate ){
